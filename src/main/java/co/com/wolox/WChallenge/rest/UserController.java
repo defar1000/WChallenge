@@ -13,15 +13,15 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "users")
 public class UserController {
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/email")
-    public ResponseEntity<User> getUserByEmail(@PathParam("email") String email) {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }
 
@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<User>> getAll(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
