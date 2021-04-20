@@ -30,7 +30,7 @@ public class PhotoController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Photo>> getPhothosOfUser (@PathVariable int userId){
+    public ResponseEntity<List<Photo>> getUserPhotos (@PathVariable int userId){
         return new ResponseEntity<>(photoService.getPhotosOfUser(userId), HttpStatus.OK);
     }
 

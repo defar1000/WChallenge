@@ -15,11 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("comments")
-public class CommentsController {
+public class CommentController {
     private CommentService commentService;
 
     @Autowired
-    public CommentsController(CommentService commentService) {
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
