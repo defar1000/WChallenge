@@ -34,13 +34,18 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Album> getAlbum(@PathVariable int id) {
-        return new ResponseEntity<>(albumService.getAlbum(id), HttpStatus.OK);
+    public ResponseEntity<Album> getAlbum(@PathVariable int id, HttpServletResponse response) throws IOException {
+        try {
+            return new ResponseEntity<>(albumService.getAlbum(id), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            answer(response, e);
+            return null;
+        }
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<Album>> getUserAlbums(@PathVariable int userId) {
-        return new ResponseEntity<>(albumService.getUserAlbums(userId), HttpStatus.OK);
+    public ResponseEntity<List<Album>> getUserAlbums(@PathVariable int userId) throws IOException {
+            return new ResponseEntity<>(albumService.getUserAlbums(userId), HttpStatus.OK);
     }
 
     /**

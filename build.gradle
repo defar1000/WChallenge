@@ -29,6 +29,8 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 }
 
 jacoco {
@@ -39,6 +41,9 @@ jacoco {
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
+	jacoco {
+		excludes += ['/model/**']
+	}
 }
 
 jacocoTestReport {

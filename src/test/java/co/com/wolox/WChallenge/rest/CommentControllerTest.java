@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,34 +33,28 @@ class CommentControllerTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    @Test
-    void getComments() {
-        UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-        builder.host(settings.getHost()).scheme(settings.getProtocol()).pathSegment("comments");
+    @BeforeEach
+    public void setUp(){
+        Mockito.when(restTemplate.getForObject(Mockito.any(URI.class), Mockito.eq(Comment[].class)))
+                .thenReturn(getCommentsArray());
+    }
 
-        Mockito.when(restTemplate.getForObject(builder.build().toUri(), Comment[].class)).thenReturn(getCommentsArray());
+    @Test
+    void getCommentsTest() {
         ResponseEntity<List<Comment>> commentsResponse = commentController.getComments("","");
-        assertEquals(commentsResponse.getBody().get(2).getName(), "name3");
+        assertEquals("name3", commentsResponse.getBody().get(2).getName());
     }
 
     @Test
-    void getCommentsFilteredEmail() {
-        UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-        builder.host(settings.getHost()).scheme(settings.getProtocol()).pathSegment("comments");
-
-        Mockito.when(restTemplate.getForObject(builder.build().toUri(), Comment[].class)).thenReturn(getCommentsArray());
+    void getCommentsFilteredEmailTest() {
         ResponseEntity<List<Comment>> commentsResponse = commentController.getComments("","email5");
-        assertEquals(commentsResponse.getBody().get(0).getEmail(), "email5");
+        assertEquals("email5", commentsResponse.getBody().get(0).getEmail());
     }
 
     @Test
-    void getCommentsFilteredName() {
-        UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
-        builder.host(settings.getHost()).scheme(settings.getProtocol()).pathSegment("comments");
-
-        Mockito.when(restTemplate.getForObject(builder.build().toUri(), Comment[].class)).thenReturn(getCommentsArray());
+    void getCommentsFilteredNameTest() {
         ResponseEntity<List<Comment>> commentsResponse = commentController.getComments("name1","");
-        assertEquals(commentsResponse.getBody().get(0).getName(), "name1");
+        assertEquals("name1", commentsResponse.getBody().get(0).getName());
     }
 
     private Comment[] getCommentsArray() {
