@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'co.com.wolox'
@@ -30,6 +31,24 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+jacoco {
+	toolVersion = "0.8.6"
+	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled false
+		csv.enabled false
+		html.destination layout.buildDirectory.dir('jacocoHtml').get().asFile
+	}
 }
